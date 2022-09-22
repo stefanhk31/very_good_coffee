@@ -8,6 +8,8 @@ abstract class CoffeeEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class CoffeeRequestedEvent extends CoffeeEvent {}
+
 class CoffeeLoadedEvent extends CoffeeEvent {
   final Coffee coffee;
   const CoffeeLoadedEvent({
@@ -16,8 +18,10 @@ class CoffeeLoadedEvent extends CoffeeEvent {
 }
 
 class CoffeeLoadErrorEvent extends CoffeeEvent {
+  final Coffee coffee;
   final String message;
   const CoffeeLoadErrorEvent({
+    required this.coffee,
     required this.message,
   });
 }

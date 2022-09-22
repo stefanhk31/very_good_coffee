@@ -2,6 +2,7 @@
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
+import 'package:uuid/uuid.dart';
 
 class Coffee extends Equatable {
   final String id;
@@ -30,8 +31,8 @@ class Coffee extends Equatable {
 
   factory Coffee.fromMap(Map<String, dynamic> map) {
     return Coffee(
-      id: map['id'] as String,
-      imageUrl: map['url'] as String,
+      id: const Uuid().v4(),
+      imageUrl: map['file'] as String,
     );
   }
 
@@ -41,7 +42,7 @@ class Coffee extends Equatable {
       Coffee.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
-  String toString() => 'CoffeeImage(id: $id, url: $imageUrl)';
+  String toString() => 'Coffee(id: $id, url: $imageUrl)';
 
   @override
   List<Object?> get props => [id, imageUrl];
