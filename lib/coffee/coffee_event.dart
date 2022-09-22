@@ -33,6 +33,15 @@ class CoffeeSaveRequestedEvent extends CoffeeEvent {
   });
 }
 
+class CoffeeSavedEvent extends CoffeeEvent {
+  final Coffee coffee;
+  final String message;
+  const CoffeeSavedEvent({
+    required this.coffee,
+    required this.message,
+  });
+}
+
 class CoffeeSaveErrorEvent extends CoffeeEvent {
   final Coffee coffee;
   final String message;

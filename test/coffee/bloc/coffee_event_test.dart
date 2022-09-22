@@ -43,6 +43,16 @@ void main() {
       });
     });
 
+    group('CoffeeSaved', () {
+      test('supports value equality', () {
+        final coffee = MockCoffee();
+        const message = 'TEST';
+        final instanceA = CoffeeSavedEvent(coffee: coffee, message: message);
+        final instanceB = CoffeeSavedEvent(coffee: coffee, message: message);
+        expect(instanceA, equals(instanceB));
+      });
+    });
+
     group('CoffeeSaveError', () {
       test('supports value equality', () {
         final coffee = MockCoffee();

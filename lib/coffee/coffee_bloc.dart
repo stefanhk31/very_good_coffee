@@ -20,7 +20,11 @@ class CoffeeBloc extends Bloc<CoffeeEvent, CoffeeState> {
         _onLoadError(event, emit);
       } else if (event is CoffeeSaveRequestedEvent) {
         _onSaveRequested(event, emit, galleryHelper);
-      } else if (event is CoffeeSaveErrorEvent) {}
+      } else if (event is CoffeeSavedEvent) {
+        _onSaved(event, emit);
+      } else if (event is CoffeeSaveErrorEvent) {
+        _onSaveError(event, emit);
+      }
     });
   }
 
@@ -63,7 +67,10 @@ class CoffeeBloc extends Bloc<CoffeeEvent, CoffeeState> {
     try {
       await helper.saveImage(event.coffee.imageUrl);
       add(
-        CoffeeRequestedEvent(),
+        CoffeeSavedEvent(
+          coffee: event.coffee,
+          message: 'Saved coffee. Yum!',
+        ),
       );
     } on Error {
       add(CoffeeSaveErrorEvent(
@@ -71,5 +78,19 @@ class CoffeeBloc extends Bloc<CoffeeEvent, CoffeeState> {
         message: 'Failed to save coffee.',
       ));
     }
+  }
+
+  void _onSaved(CoffeeSavedEvent event, Emitter<CoffeeState> emit) {
+    emit(state.copyWith(
+      coffee: event.coffee,
+      message: event.message,
+    ));
+  }
+
+  void _onSaveError(CoffeeSaveErrorEvent event, Emitter<CoffeeState> emit) {
+    emit(state.copyWith(
+      coffee: event.coffee,
+      message: event.message,
+    ));
   }
 }

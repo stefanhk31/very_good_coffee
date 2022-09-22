@@ -20,14 +20,18 @@ void main() {
     late Coffee coffee2;
     late CoffeeRepository repository;
     late GalleryHelper galleryHelper;
-    late String errorMessage;
+    late String loadErrorMessage;
+    late String saveErrorMessage;
+    late String saveSuccessMessage;
 
     setUp(() {
       coffee1 = MockCoffee();
       coffee2 = MockCoffee();
       repository = MockRepository();
       galleryHelper = MockGalleryHelper();
-      errorMessage = 'Failed to load coffee.';
+      loadErrorMessage = 'Failed to load coffee.';
+      saveErrorMessage = 'Failed to save coffee.';
+      saveSuccessMessage = 'Saved coffee. Yum!';
     });
 
     test('initial state is CoffeeState', () {
@@ -64,7 +68,7 @@ void main() {
         expect: () => [
           CoffeeState(
             coffee: const Coffee(),
-            message: errorMessage,
+            message: loadErrorMessage,
           ),
         ],
       );
@@ -98,19 +102,19 @@ void main() {
 
     group('CoffeeLoadError', () {
       blocTest<CoffeeBloc, CoffeeState>(
-        'emits updated state when coffee fails to load',
+        'emits updated state with error message when coffee fails to load',
         build: () => CoffeeBloc(repository, galleryHelper),
         seed: () => CoffeeState(coffee: coffee1),
         act: (bloc) {
           bloc.add(CoffeeLoadErrorEvent(
             coffee: coffee1,
-            message: errorMessage,
+            message: saveErrorMessage,
           ));
         },
         expect: () => [
           CoffeeState(
             coffee: coffee1,
-            message: errorMessage,
+            message: saveErrorMessage,
           ),
         ],
       );
@@ -118,7 +122,7 @@ void main() {
 
     group('CoffeeSaveRequested', () {
       blocTest<CoffeeBloc, CoffeeState>(
-        'loads new coffee when coffee is successfully saved',
+        'emits updated state when coffee is successfully saved',
         build: () => CoffeeBloc(repository, galleryHelper),
         seed: () => CoffeeState(coffee: coffee1),
         act: (bloc) {
@@ -126,13 +130,13 @@ void main() {
           when(() => galleryHelper.saveImage(any())).thenAnswer(
             (_) => Future(() => true),
           );
-          when(() => repository.getCoffee()).thenAnswer(
-            (_) => Future(() => coffee2),
-          );
           bloc.add(CoffeeSaveRequestedEvent(coffee: coffee1));
         },
         expect: () => [
-          CoffeeState(coffee: coffee2),
+          CoffeeState(
+            coffee: coffee1,
+            message: saveSuccessMessage,
+          ),
         ],
       );
 
@@ -149,12 +153,56 @@ void main() {
         expect: () => [
           CoffeeState(
             coffee: coffee1,
-            message: errorMessage,
+            message: saveErrorMessage,
           ),
         ],
       );
     });
 
-    group('CoffeeSaveError', () {});
+    group('CoffeeSaved', () {
+      blocTest<CoffeeBloc, CoffeeState>(
+        'emits updated state with success message when coffee loads',
+        build: () => CoffeeBloc(repository, galleryHelper),
+        seed: () => CoffeeState(coffee: coffee1),
+        act: (bloc) {
+          when(() => coffee1.imageUrl).thenReturn('TEST');
+          when(() => galleryHelper.saveImage(any())).thenAnswer(
+            (_) => Future(() => true),
+          );
+
+          bloc.add(CoffeeSavedEvent(
+            coffee: coffee1,
+            message: saveSuccessMessage,
+          ));
+        },
+        expect: () => [
+          CoffeeState(
+            coffee: coffee1,
+            message: saveSuccessMessage,
+          ),
+        ],
+      );
+    });
+
+    group('CoffeeSaveError', () {
+      blocTest<CoffeeBloc, CoffeeState>(
+        'emits updated state with failure message when coffee save request fails',
+        build: () => CoffeeBloc(repository, galleryHelper),
+        seed: () => CoffeeState(coffee: coffee1),
+        act: (bloc) {
+          when(() => repository.getCoffee()).thenThrow(
+            Error(),
+          );
+          bloc.add(
+              CoffeeSaveErrorEvent(coffee: coffee1, message: loadErrorMessage));
+        },
+        expect: () => [
+          CoffeeState(
+            coffee: coffee1,
+            message: loadErrorMessage,
+          ),
+        ],
+      );
+    });
   });
 }
