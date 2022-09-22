@@ -21,10 +21,3 @@ class CoffeeLoadErrorEvent extends CoffeeEvent {
     required this.message,
   });
 }
-
-class CoffeeSavedEvent extends CoffeeEvent {
-  final Coffee coffee;
-  const CoffeeSavedEvent({
-    required this.coffee,
-  });
-}

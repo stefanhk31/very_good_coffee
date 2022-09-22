@@ -12,10 +12,12 @@ void main() {
   group("CoffeeBloc", () {
     late Coffee coffee1;
     late Coffee coffee2;
+    late String errorMessage;
 
     setUp(() {
       coffee1 = MockCoffee();
       coffee2 = MockCoffee();
+      errorMessage = 'TEST ERROR MESSAGE';
     });
 
     test('initial state is CoffeeState', () {
@@ -24,7 +26,7 @@ void main() {
 
     group("CoffeeLoaded", () {
       blocTest<CoffeeBloc, CoffeeState>(
-        'emits updated state when image is loaded',
+        'emits updated state when coffee is first loaded',
         build: () => CoffeeBloc(),
         seed: () => CoffeeState.initial(),
         act: (bloc) => bloc.add(CoffeeLoadedEvent(
@@ -34,34 +36,33 @@ void main() {
           CoffeeState(coffee: coffee1),
         ],
       );
-    });
 
-    group("CoffeeLoadError", () {
       blocTest<CoffeeBloc, CoffeeState>(
-        'state does not change when image fails to load',
+        'emits updated state when new coffee is loaded',
         build: () => CoffeeBloc(),
         seed: () => CoffeeState(coffee: coffee1),
-        act: (bloc) => bloc.add(CoffeeLoadErrorEvent(message: 'TEST')),
+        act: (bloc) => bloc.add(CoffeeLoadedEvent(
+          coffee: coffee2,
+        )),
         expect: () => [
-          CoffeeState(
-            coffee: coffee1,
-          ),
+          CoffeeState(coffee: coffee2),
         ],
       );
     });
 
-    group("CoffeeSaved", () {
+    group("CoffeeLoadError", () {
       blocTest<CoffeeBloc, CoffeeState>(
-        'emits updated state when image is saved',
+        'emits updated state when coffee fails to load',
         build: () => CoffeeBloc(),
         seed: () => CoffeeState(coffee: coffee1),
-        act: (bloc) => bloc.add(CoffeeSavedEvent(
-          coffee: coffee1,
-        )),
+        act: (bloc) {
+          bloc.add(CoffeeLoadErrorEvent(message: errorMessage));
+        },
         expect: () => [
           CoffeeState(
-            coffee: coffee2,
-          )
+            coffee: coffee1,
+            message: errorMessage,
+          ),
         ],
       );
     });

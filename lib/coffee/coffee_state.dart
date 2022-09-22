@@ -4,8 +4,11 @@ part of 'coffee_bloc.dart';
 
 class CoffeeState extends Equatable {
   final Coffee coffee;
+  final String message;
+
   const CoffeeState({
     required this.coffee,
+    this.message = '',
   });
 
   factory CoffeeState.initial() {
@@ -13,16 +16,18 @@ class CoffeeState extends Equatable {
   }
 
   @override
-  List<Object> get props => [coffee];
+  List<Object> get props => [coffee, message];
 
   @override
   bool get stringify => true;
 
   CoffeeState copyWith({
     Coffee? coffee,
+    String? message,
   }) {
     return CoffeeState(
       coffee: coffee ?? this.coffee,
+      message: message ?? this.message,
     );
   }
 }
