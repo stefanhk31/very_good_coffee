@@ -25,3 +25,19 @@ class CoffeeLoadErrorEvent extends CoffeeEvent {
     required this.message,
   });
 }
+
+class CoffeeSaveRequestedEvent extends CoffeeEvent {
+  final Coffee coffee;
+  const CoffeeSaveRequestedEvent({
+    required this.coffee,
+  });
+}
+
+class CoffeeSaveErrorEvent extends CoffeeEvent {
+  final Coffee coffee;
+  final String message;
+  const CoffeeSaveErrorEvent({
+    required this.coffee,
+    required this.message,
+  });
+}

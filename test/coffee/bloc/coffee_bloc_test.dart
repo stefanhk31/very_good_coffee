@@ -4,6 +4,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:very_good_coffee/coffee/coffee_bloc.dart';
+import 'package:very_good_coffee/helpers/gallery_helper.dart';
 import 'package:very_good_coffee/model/coffee.dart';
 import 'package:very_good_coffee/repository/coffee_repository.dart';
 
@@ -11,28 +12,33 @@ class MockCoffee extends Mock implements Coffee {}
 
 class MockRepository extends Mock implements CoffeeRepository {}
 
+class MockGalleryHelper extends Mock implements GalleryHelper {}
+
 void main() {
   group('CoffeeBloc', () {
     late Coffee coffee1;
     late Coffee coffee2;
     late CoffeeRepository repository;
+    late GalleryHelper galleryHelper;
     late String errorMessage;
 
     setUp(() {
       coffee1 = MockCoffee();
       coffee2 = MockCoffee();
       repository = MockRepository();
+      galleryHelper = MockGalleryHelper();
       errorMessage = 'Failed to load coffee.';
     });
 
     test('initial state is CoffeeState', () {
-      expect(CoffeeBloc(repository).state, equals(CoffeeState.initial()));
+      expect(CoffeeBloc(repository, galleryHelper).state,
+          equals(CoffeeState.initial()));
     });
 
     group("CoffeeRequested", () {
       blocTest<CoffeeBloc, CoffeeState>(
         'emits updated state when coffee is successfully requested',
-        build: () => CoffeeBloc(repository),
+        build: () => CoffeeBloc(repository, galleryHelper),
         seed: () => CoffeeState.initial(),
         act: (bloc) {
           when(() => repository.getCoffee()).thenAnswer(
@@ -47,7 +53,7 @@ void main() {
 
       blocTest<CoffeeBloc, CoffeeState>(
         'emits updated state when coffee request fails',
-        build: () => CoffeeBloc(repository),
+        build: () => CoffeeBloc(repository, galleryHelper),
         seed: () => CoffeeState.initial(),
         act: (bloc) {
           when(() => repository.getCoffee()).thenThrow(
@@ -67,7 +73,7 @@ void main() {
     group('CoffeeLoaded', () {
       blocTest<CoffeeBloc, CoffeeState>(
         'emits updated state when coffee is loaded',
-        build: () => CoffeeBloc(repository),
+        build: () => CoffeeBloc(repository, galleryHelper),
         seed: () => CoffeeState.initial(),
         act: (bloc) => bloc.add(CoffeeLoadedEvent(
           coffee: coffee1,
@@ -79,7 +85,7 @@ void main() {
 
       blocTest<CoffeeBloc, CoffeeState>(
         'emits updated state when new coffee is loaded',
-        build: () => CoffeeBloc(repository),
+        build: () => CoffeeBloc(repository, galleryHelper),
         seed: () => CoffeeState(coffee: coffee1),
         act: (bloc) => bloc.add(CoffeeLoadedEvent(
           coffee: coffee2,
@@ -93,7 +99,7 @@ void main() {
     group('CoffeeLoadError', () {
       blocTest<CoffeeBloc, CoffeeState>(
         'emits updated state when coffee fails to load',
-        build: () => CoffeeBloc(repository),
+        build: () => CoffeeBloc(repository, galleryHelper),
         seed: () => CoffeeState(coffee: coffee1),
         act: (bloc) {
           bloc.add(CoffeeLoadErrorEvent(
@@ -109,5 +115,46 @@ void main() {
         ],
       );
     });
+
+    group('CoffeeSaveRequested', () {
+      blocTest<CoffeeBloc, CoffeeState>(
+        'loads new coffee when coffee is successfully saved',
+        build: () => CoffeeBloc(repository, galleryHelper),
+        seed: () => CoffeeState(coffee: coffee1),
+        act: (bloc) {
+          when(() => coffee1.imageUrl).thenReturn('TEST');
+          when(() => galleryHelper.saveImage(any())).thenAnswer(
+            (_) => Future(() => true),
+          );
+          when(() => repository.getCoffee()).thenAnswer(
+            (_) => Future(() => coffee2),
+          );
+          bloc.add(CoffeeSaveRequestedEvent(coffee: coffee1));
+        },
+        expect: () => [
+          CoffeeState(coffee: coffee2),
+        ],
+      );
+
+      blocTest<CoffeeBloc, CoffeeState>(
+        'emits updated state when coffee save request fails',
+        build: () => CoffeeBloc(repository, galleryHelper),
+        seed: () => CoffeeState(coffee: coffee1),
+        act: (bloc) {
+          when(() => repository.getCoffee()).thenThrow(
+            Error(),
+          );
+          bloc.add(CoffeeSaveRequestedEvent(coffee: coffee1));
+        },
+        expect: () => [
+          CoffeeState(
+            coffee: coffee1,
+            message: errorMessage,
+          ),
+        ],
+      );
+    });
+
+    group('CoffeeSaveError', () {});
   });
 }

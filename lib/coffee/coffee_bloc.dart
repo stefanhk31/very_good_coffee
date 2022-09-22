@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:very_good_coffee/api/coffee_service.dart';
+import 'package:very_good_coffee/helpers/gallery_helper.dart';
 import 'package:very_good_coffee/repository/coffee_repository.dart';
 
 import '../model/coffee.dart';
@@ -9,16 +9,18 @@ part 'coffee_event.dart';
 part 'coffee_state.dart';
 
 class CoffeeBloc extends Bloc<CoffeeEvent, CoffeeState> {
-  CoffeeBloc(CoffeeRepository repository) : super(CoffeeState.initial()) {
+  CoffeeBloc(CoffeeRepository repository, GalleryHelper galleryHelper)
+      : super(CoffeeState.initial()) {
     on<CoffeeEvent>((event, emit) {
       if (event is CoffeeRequestedEvent) {
         _onRequested(event, emit, repository);
-      }
-      if (event is CoffeeLoadedEvent) {
+      } else if (event is CoffeeLoadedEvent) {
         _onLoaded(event, emit);
       } else if (event is CoffeeLoadErrorEvent) {
-        _onError(event, emit);
-      }
+        _onLoadError(event, emit);
+      } else if (event is CoffeeSaveRequestedEvent) {
+        _onSaveRequested(event, emit, galleryHelper);
+      } else if (event is CoffeeSaveErrorEvent) {}
     });
   }
 
@@ -46,7 +48,7 @@ class CoffeeBloc extends Bloc<CoffeeEvent, CoffeeState> {
     ));
   }
 
-  void _onError(
+  void _onLoadError(
     CoffeeLoadErrorEvent event,
     Emitter<CoffeeState> emit,
   ) {
@@ -54,5 +56,20 @@ class CoffeeBloc extends Bloc<CoffeeEvent, CoffeeState> {
       coffee: event.coffee,
       message: event.message,
     ));
+  }
+
+  void _onSaveRequested(CoffeeSaveRequestedEvent event,
+      Emitter<CoffeeState> emit, GalleryHelper helper) async {
+    try {
+      await helper.saveImage(event.coffee.imageUrl);
+      add(
+        CoffeeRequestedEvent(),
+      );
+    } on Error {
+      add(CoffeeSaveErrorEvent(
+        coffee: event.coffee,
+        message: 'Failed to save coffee.',
+      ));
+    }
   }
 }

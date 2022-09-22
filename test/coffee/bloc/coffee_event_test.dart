@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:very_good_coffee/api/coffee_service.dart';
 import 'package:very_good_coffee/coffee/coffee_bloc.dart';
 
 import 'coffee_bloc_test.dart';
@@ -31,6 +30,27 @@ void main() {
             CoffeeLoadErrorEvent(coffee: coffee, message: message);
         final instanceB =
             CoffeeLoadErrorEvent(coffee: coffee, message: message);
+        expect(instanceA, equals(instanceB));
+      });
+    });
+
+    group('CoffeeSaveRequested', () {
+      test('supports value equality', () {
+        final coffee = MockCoffee();
+        final instanceA = CoffeeSaveRequestedEvent(coffee: coffee);
+        final instanceB = CoffeeSaveRequestedEvent(coffee: coffee);
+        expect(instanceA, equals(instanceB));
+      });
+    });
+
+    group('CoffeeSaveError', () {
+      test('supports value equality', () {
+        final coffee = MockCoffee();
+        const message = 'TEST';
+        final instanceA =
+            CoffeeSaveErrorEvent(coffee: coffee, message: message);
+        final instanceB =
+            CoffeeSaveErrorEvent(coffee: coffee, message: message);
         expect(instanceA, equals(instanceB));
       });
     });
