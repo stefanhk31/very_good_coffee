@@ -39,6 +39,8 @@ dependencies:
   gallery_saver: ^2.3.2
   http: ^0.13.5
   uuid: ^3.0.6
+  bloc_test: ^9.1.0
+  mocktail: ^0.3.0
 
 dev_dependencies:
   flutter_test:
