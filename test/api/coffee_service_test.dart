@@ -2,10 +2,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:very_good_coffee/api/coffee_service.dart';
 
 void main() {
-  group("CoffeeService", () {
+  group("CoffeeApiProvider", () {
     test("can make api call", () async {
-      var service = CoffeeService();
-      var coffee = await service.getCoffee();
+      var provider = CoffeeApiProvider();
+      var coffee = await provider.getCoffee();
       expect(coffee, isNotNull);
     });
   });

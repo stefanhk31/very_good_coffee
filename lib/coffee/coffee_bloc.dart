@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:very_good_coffee/api/coffee_service.dart';
+import 'package:very_good_coffee/repository/coffee_repository.dart';
 
 import '../model/coffee.dart';
 
@@ -8,10 +9,10 @@ part 'coffee_event.dart';
 part 'coffee_state.dart';
 
 class CoffeeBloc extends Bloc<CoffeeEvent, CoffeeState> {
-  CoffeeBloc(CoffeeService service) : super(CoffeeState.initial()) {
+  CoffeeBloc(CoffeeRepository repository) : super(CoffeeState.initial()) {
     on<CoffeeEvent>((event, emit) {
       if (event is CoffeeRequestedEvent) {
-        _onRequested(event, emit, service);
+        _onRequested(event, emit, repository);
       }
       if (event is CoffeeLoadedEvent) {
         _onLoaded(event, emit);
@@ -22,9 +23,9 @@ class CoffeeBloc extends Bloc<CoffeeEvent, CoffeeState> {
   }
 
   void _onRequested(CoffeeRequestedEvent event, Emitter<CoffeeState> emit,
-      CoffeeService service) async {
+      CoffeeRepository repository) async {
     try {
-      var coffee = await service.getCoffee();
+      var coffee = await repository.getCoffee();
       add(
         CoffeeLoadedEvent(coffee: coffee),
       );

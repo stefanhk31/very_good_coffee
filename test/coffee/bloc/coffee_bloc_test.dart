@@ -1,42 +1,41 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:bloc_test/bloc_test.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:very_good_coffee/api/coffee_service.dart';
 import 'package:very_good_coffee/coffee/coffee_bloc.dart';
 import 'package:very_good_coffee/model/coffee.dart';
+import 'package:very_good_coffee/repository/coffee_repository.dart';
 
 class MockCoffee extends Mock implements Coffee {}
 
-class MockCoffeeService extends Mock implements CoffeeService {}
+class MockRepository extends Mock implements CoffeeRepository {}
 
 void main() {
   group('CoffeeBloc', () {
     late Coffee coffee1;
     late Coffee coffee2;
-    late CoffeeService service;
+    late CoffeeRepository repository;
     late String errorMessage;
 
     setUp(() {
       coffee1 = MockCoffee();
       coffee2 = MockCoffee();
-      service = MockCoffeeService();
+      repository = MockRepository();
       errorMessage = 'Failed to load coffee.';
     });
 
     test('initial state is CoffeeState', () {
-      expect(CoffeeBloc(service).state, equals(CoffeeState.initial()));
+      expect(CoffeeBloc(repository).state, equals(CoffeeState.initial()));
     });
 
     group("CoffeeRequested", () {
       blocTest<CoffeeBloc, CoffeeState>(
         'emits updated state when coffee is successfully requested',
-        build: () => CoffeeBloc(service),
+        build: () => CoffeeBloc(repository),
         seed: () => CoffeeState.initial(),
         act: (bloc) {
-          when(() => service.getCoffee()).thenAnswer(
+          when(() => repository.getCoffee()).thenAnswer(
             (_) => Future(() => coffee1),
           );
           bloc.add(CoffeeRequestedEvent());
@@ -48,10 +47,10 @@ void main() {
 
       blocTest<CoffeeBloc, CoffeeState>(
         'emits updated state when coffee request fails',
-        build: () => CoffeeBloc(service),
+        build: () => CoffeeBloc(repository),
         seed: () => CoffeeState.initial(),
         act: (bloc) {
-          when(() => service.getCoffee()).thenThrow(
+          when(() => repository.getCoffee()).thenThrow(
             Error(),
           );
           bloc.add(CoffeeRequestedEvent());
@@ -68,7 +67,7 @@ void main() {
     group('CoffeeLoaded', () {
       blocTest<CoffeeBloc, CoffeeState>(
         'emits updated state when coffee is loaded',
-        build: () => CoffeeBloc(service),
+        build: () => CoffeeBloc(repository),
         seed: () => CoffeeState.initial(),
         act: (bloc) => bloc.add(CoffeeLoadedEvent(
           coffee: coffee1,
@@ -80,7 +79,7 @@ void main() {
 
       blocTest<CoffeeBloc, CoffeeState>(
         'emits updated state when new coffee is loaded',
-        build: () => CoffeeBloc(service),
+        build: () => CoffeeBloc(repository),
         seed: () => CoffeeState(coffee: coffee1),
         act: (bloc) => bloc.add(CoffeeLoadedEvent(
           coffee: coffee2,
@@ -94,7 +93,7 @@ void main() {
     group('CoffeeLoadError', () {
       blocTest<CoffeeBloc, CoffeeState>(
         'emits updated state when coffee fails to load',
-        build: () => CoffeeBloc(service),
+        build: () => CoffeeBloc(repository),
         seed: () => CoffeeState(coffee: coffee1),
         act: (bloc) {
           bloc.add(CoffeeLoadErrorEvent(

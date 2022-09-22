@@ -3,9 +3,9 @@ import 'package:http/http.dart' as http;
 
 import '../model/coffee.dart';
 
-class CoffeeService {
+class CoffeeApiProvider {
   final String baseUrl;
-  CoffeeService({
+  CoffeeApiProvider({
     this.baseUrl = 'https://coffee.alexflipnote.dev/random.json',
   });
 
