@@ -3,9 +3,9 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:very_good_coffee/coffee/coffee_bloc.dart';
+import 'package:very_good_coffee/coffee/bloc/coffee_bloc.dart';
 import 'package:very_good_coffee/helpers/gallery_helper.dart';
-import 'package:very_good_coffee/model/coffee.dart';
+import 'package:very_good_coffee/model/coffee_model.dart';
 import 'package:very_good_coffee/repository/coffee_repository.dart';
 
 class MockCoffee extends Mock implements Coffee {}

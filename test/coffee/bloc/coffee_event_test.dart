@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:very_good_coffee/coffee/coffee_bloc.dart';
+import 'package:very_good_coffee/coffee/bloc/coffee_bloc.dart';
 
 import 'coffee_bloc_test.dart';
 

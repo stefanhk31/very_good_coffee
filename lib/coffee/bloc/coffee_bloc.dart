@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:very_good_coffee/helpers/gallery_helper.dart';
 import 'package:very_good_coffee/repository/coffee_repository.dart';
 
-import '../model/coffee.dart';
+import '../../model/coffee_model.dart';
 
 part 'coffee_event.dart';
 part 'coffee_state.dart';
