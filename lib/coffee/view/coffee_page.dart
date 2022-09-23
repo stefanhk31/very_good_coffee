@@ -36,37 +36,78 @@ class _CoffeeBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Expanded(
-          child: Row(
-            children: [
-              Expanded(
-                child: Image.network(
-                    "https://coffee.alexflipnote.dev/KoZr56EQPp8_coffee.jpg"),
+    return Container(
+      color: Theme.of(context).colorScheme.background,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Center(
+            child: Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(25.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      width: 2.0,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                    borderRadius: BorderRadius.circular(
+                      5.0,
+                    ),
+                  ),
+                  child: Image.network(
+                    "https://coffee.alexflipnote.dev/KoZr56EQPp8_coffee.jpg",
+                  ),
+                ),
               ),
-            ],
+            ),
           ),
-        ),
-        Expanded(
-          child: Row(
-            children: [
-              Expanded(
+          Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(25.0, 10.0, 5.0, 10.0),
                   child: ElevatedButton(
-                onPressed: () {},
-                child: const Text('Get Another'),
-              )),
-              Expanded(
+                    onPressed: () {},
+                    child: const Text(
+                      'New Coffee',
+                      style: TextStyle(
+                        fontSize: 24.0,
+                        color: Colors.white,
+                      ),
+                    ),
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                        Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(5.0, 10.0, 25.0, 10.0),
                   child: ElevatedButton(
-                onPressed: () {},
-                child: const Text('Save Coffee'),
-              )),
-            ],
+                    onPressed: () {},
+                    child: const Text(
+                      'Save Coffee',
+                      style: TextStyle(
+                        fontSize: 24.0,
+                        color: Colors.white,
+                      ),
+                    ),
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                        Theme.of(context).colorScheme.secondary,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
