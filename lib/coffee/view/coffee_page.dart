@@ -67,6 +67,17 @@ class _CoffeeBody extends StatelessWidget {
       }
     }
 
+    void requestNewCoffee() {
+      context.read<CoffeeBloc>().add(CoffeeRequestedEvent());
+    }
+
+    void saveCoffee() {
+      var coffee = context.read<CoffeeBloc>().state.coffee;
+      context.read<CoffeeBloc>().add(
+            CoffeeSaveRequestedEvent(coffee: coffee),
+          );
+    }
+
     toggleLoader();
 
     return Container(
@@ -85,13 +96,13 @@ class _CoffeeBody extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 CtaButton(
-                  onPressed: () {},
+                  onPressed: requestNewCoffee,
                   text: 'New Coffee',
                   padding: const EdgeInsets.fromLTRB(25.0, 10.0, 5.0, 10.0),
                   color: Theme.of(context).colorScheme.primary,
                 ),
                 CtaButton(
-                  onPressed: () {},
+                  onPressed: saveCoffee,
                   text: 'Save Coffee',
                   padding: const EdgeInsets.fromLTRB(5.0, 10.0, 25.0, 10.0),
                   color: Theme.of(context).colorScheme.secondary,

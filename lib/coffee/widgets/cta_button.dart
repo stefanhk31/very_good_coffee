@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CtaButton extends StatelessWidget {
-  final Function onPressed;
+  final Function() onPressed;
   final String text;
   final EdgeInsetsGeometry padding;
   final Color color;
@@ -19,7 +19,7 @@ class CtaButton extends StatelessWidget {
     return Padding(
       padding: padding,
       child: ElevatedButton(
-        onPressed: onPressed(),
+        onPressed: onPressed,
         child: Text(
           text,
           style: const TextStyle(
