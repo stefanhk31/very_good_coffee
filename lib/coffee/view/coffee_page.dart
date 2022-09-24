@@ -67,11 +67,11 @@ class _CoffeeBody extends StatelessWidget {
       }
     }
 
-    void requestNewCoffee() {
+    void _requestNewCoffee() {
       context.read<CoffeeBloc>().add(CoffeeRequestedEvent());
     }
 
-    void saveCoffee() {
+    void _saveCurrentCoffee() {
       var coffee = context.read<CoffeeBloc>().state.coffee;
       context.read<CoffeeBloc>().add(
             CoffeeSaveRequestedEvent(coffee: coffee),
@@ -96,13 +96,13 @@ class _CoffeeBody extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 CtaButton(
-                  onPressed: requestNewCoffee,
+                  onPressed: _requestNewCoffee,
                   text: 'New Coffee',
                   padding: const EdgeInsets.fromLTRB(25.0, 10.0, 5.0, 10.0),
                   color: Theme.of(context).colorScheme.primary,
                 ),
                 CtaButton(
-                  onPressed: saveCoffee,
+                  onPressed: _saveCurrentCoffee,
                   text: 'Save Coffee',
                   padding: const EdgeInsets.fromLTRB(5.0, 10.0, 25.0, 10.0),
                   color: Theme.of(context).colorScheme.secondary,
