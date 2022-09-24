@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class Placeholder extends StatelessWidget {
-  const Placeholder({
+class StartPlaceholder extends StatelessWidget {
+  const StartPlaceholder({
     Key? key,
   }) : super(key: key);
 

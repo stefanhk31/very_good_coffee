@@ -108,6 +108,7 @@ class _CoffeeBody extends StatelessWidget {
           Center(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 CtaButton(
                   onPressed: _requestNewCoffee,
