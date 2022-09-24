@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
-import 'package:very_good_coffee/coffee/widgets/placeholder.dart';
+import 'package:very_good_coffee/coffee/widgets/start_placeholder.dart';
 
 class CoffeeImage extends StatelessWidget {
   final String imageUrl;

@@ -57,7 +57,7 @@ class _CoffeeBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void toggleLoader() {
+    void _toggleLoader() {
       bool showLoader = context.read<CoffeeBloc>().state.loading;
       if (showLoader) {
         context.loaderOverlay.show();
@@ -66,13 +66,13 @@ class _CoffeeBody extends StatelessWidget {
       }
     }
 
-    void toggleToast() {
+    void _toggleToast() {
       bool displayToast = context.read<CoffeeBloc>().state.message.isNotEmpty;
       if (displayToast) {
         Fluttertoast.showToast(
             msg: context.read<CoffeeBloc>().state.message,
             toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.SNACKBAR,
+            gravity: ToastGravity.CENTER,
             timeInSecForIosWeb: 3,
             backgroundColor: Theme.of(context).colorScheme.secondary,
             textColor: Colors.white,
@@ -91,8 +91,8 @@ class _CoffeeBody extends StatelessWidget {
           );
     }
 
-    toggleLoader();
-    toggleToast();
+    _toggleLoader();
+    _toggleToast();
 
     return Container(
       color: Theme.of(context).colorScheme.background,
@@ -100,29 +100,31 @@ class _CoffeeBody extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Center(
+          Expanded(
             child: CoffeeImage(
               imageUrl: context.watch<CoffeeBloc>().state.coffee.imageUrl,
             ),
           ),
-          Center(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                CtaButton(
-                  onPressed: _requestNewCoffee,
-                  text: 'New Coffee',
-                  padding: const EdgeInsets.fromLTRB(25.0, 10.0, 5.0, 10.0),
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-                CtaButton(
-                  onPressed: _saveCurrentCoffee,
-                  text: 'Save Coffee',
-                  padding: const EdgeInsets.fromLTRB(5.0, 10.0, 25.0, 10.0),
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-              ],
+          SafeArea(
+            child: Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  CtaButton(
+                    onPressed: _requestNewCoffee,
+                    text: 'New Coffee',
+                    padding: const EdgeInsets.fromLTRB(25.0, 10.0, 5.0, 10.0),
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  CtaButton(
+                    onPressed: _saveCurrentCoffee,
+                    text: 'Save Coffee',
+                    padding: const EdgeInsets.fromLTRB(5.0, 10.0, 25.0, 10.0),
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
+                ],
+              ),
             ),
           ),
         ],
