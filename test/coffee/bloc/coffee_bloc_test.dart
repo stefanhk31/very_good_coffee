@@ -51,7 +51,15 @@ void main() {
           bloc.add(CoffeeRequestedEvent());
         },
         expect: () => [
-          CoffeeState(coffee: coffee1),
+          CoffeeState(
+            coffee: Coffee(),
+            message: '',
+            loading: true,
+          ),
+          CoffeeState(
+            coffee: coffee1,
+            loading: false,
+          ),
         ],
       );
 
@@ -67,8 +75,14 @@ void main() {
         },
         expect: () => [
           CoffeeState(
+            coffee: Coffee(),
+            message: '',
+            loading: true,
+          ),
+          CoffeeState(
             coffee: const Coffee(),
             message: loadErrorMessage,
+            loading: false,
           ),
         ],
       );
@@ -83,7 +97,10 @@ void main() {
           coffee: coffee1,
         )),
         expect: () => [
-          CoffeeState(coffee: coffee1),
+          CoffeeState(
+            coffee: coffee1,
+            loading: false,
+          ),
         ],
       );
 
@@ -95,7 +112,10 @@ void main() {
           coffee: coffee2,
         )),
         expect: () => [
-          CoffeeState(coffee: coffee2),
+          CoffeeState(
+            coffee: coffee2,
+            loading: false,
+          ),
         ],
       );
     });
@@ -115,6 +135,7 @@ void main() {
           CoffeeState(
             coffee: coffee1,
             message: saveErrorMessage,
+            loading: false,
           ),
         ],
       );
@@ -135,7 +156,13 @@ void main() {
         expect: () => [
           CoffeeState(
             coffee: coffee1,
+            message: '',
+            loading: true,
+          ),
+          CoffeeState(
+            coffee: coffee1,
             message: saveSuccessMessage,
+            loading: false,
           ),
         ],
       );
@@ -153,7 +180,13 @@ void main() {
         expect: () => [
           CoffeeState(
             coffee: coffee1,
+            message: '',
+            loading: true,
+          ),
+          CoffeeState(
+            coffee: coffee1,
             message: saveErrorMessage,
+            loading: false,
           ),
         ],
       );
@@ -179,6 +212,7 @@ void main() {
           CoffeeState(
             coffee: coffee1,
             message: saveSuccessMessage,
+            loading: false,
           ),
         ],
       );
@@ -200,6 +234,7 @@ void main() {
           CoffeeState(
             coffee: coffee1,
             message: loadErrorMessage,
+            loading: false,
           ),
         ],
       );

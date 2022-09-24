@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:very_good_coffee/helpers/gallery_helper.dart';
 import 'package:very_good_coffee/repository/coffee_repository.dart';
 
@@ -31,6 +32,9 @@ class CoffeeBloc extends Bloc<CoffeeEvent, CoffeeState> {
   void _onRequested(CoffeeRequestedEvent event, Emitter<CoffeeState> emit,
       CoffeeRepository repository) async {
     try {
+      emit(state.copyWith(
+        loading: true,
+      ));
       var coffee = await repository.getCoffee();
       add(
         CoffeeLoadedEvent(coffee: coffee),
@@ -49,6 +53,7 @@ class CoffeeBloc extends Bloc<CoffeeEvent, CoffeeState> {
   ) {
     emit(state.copyWith(
       coffee: event.coffee,
+      loading: false,
     ));
   }
 
@@ -59,12 +64,17 @@ class CoffeeBloc extends Bloc<CoffeeEvent, CoffeeState> {
     emit(state.copyWith(
       coffee: event.coffee,
       message: event.message,
+      loading: false,
     ));
   }
 
   void _onSaveRequested(CoffeeSaveRequestedEvent event,
       Emitter<CoffeeState> emit, GalleryHelper helper) async {
     try {
+      emit(state.copyWith(
+        coffee: event.coffee,
+        loading: true,
+      ));
       await helper.saveImage(event.coffee.imageUrl);
       add(
         CoffeeSavedEvent(
@@ -84,6 +94,7 @@ class CoffeeBloc extends Bloc<CoffeeEvent, CoffeeState> {
     emit(state.copyWith(
       coffee: event.coffee,
       message: event.message,
+      loading: false,
     ));
   }
 
@@ -91,6 +102,7 @@ class CoffeeBloc extends Bloc<CoffeeEvent, CoffeeState> {
     emit(state.copyWith(
       coffee: event.coffee,
       message: event.message,
+      loading: false,
     ));
   }
 }
