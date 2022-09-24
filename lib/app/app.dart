@@ -9,6 +9,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Very Good Coffee',
       theme: ThemeData.light().copyWith(
         colorScheme: const ColorScheme.light(

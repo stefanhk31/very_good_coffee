@@ -9,8 +9,7 @@ class Coffee extends Equatable {
   final String imageUrl;
   const Coffee({
     this.id = '',
-    this.imageUrl =
-        'https://upload.wikimedia.org/wikipedia/commons/5/59/Coffee_Cup.png',
+    this.imageUrl = '',
   });
 
   Coffee copyWith({

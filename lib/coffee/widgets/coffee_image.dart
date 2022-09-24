@@ -22,9 +22,11 @@ class CoffeeImage extends StatelessWidget {
             5.0,
           ),
         ),
-        child: Image.network(
-          imageUrl,
-        ),
+        child: imageUrl.isNotEmpty
+            ? Image.network(
+                imageUrl,
+              )
+            : const Placeholder(),
       ),
     );
   }

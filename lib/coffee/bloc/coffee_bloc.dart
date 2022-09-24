@@ -33,6 +33,7 @@ class CoffeeBloc extends Bloc<CoffeeEvent, CoffeeState> {
     try {
       emit(state.copyWith(
         coffee: state.coffee,
+        message: '',
         loading: true,
       ));
       var coffee = await repository.getCoffee();
@@ -82,7 +83,7 @@ class CoffeeBloc extends Bloc<CoffeeEvent, CoffeeState> {
           message: 'Saved coffee. Yum!',
         ),
       );
-    } on Error {
+    } catch (e) {
       add(CoffeeSaveErrorEvent(
         coffee: event.coffee,
         message: 'Failed to save coffee.',

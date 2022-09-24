@@ -43,6 +43,7 @@ dependencies:
   mocktail: ^0.3.0
   loader_overlay: ^2.0.10
   network_image_mock: ^2.1.1
+  fluttertoast: ^8.0.9
 
 dev_dependencies:
   flutter_test:

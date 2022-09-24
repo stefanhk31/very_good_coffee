@@ -1,12 +1,11 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:very_good_coffee/coffee/coffee.dart';
 import 'package:very_good_coffee/helpers/gallery_helper.dart';
 import 'package:very_good_coffee/repository/coffee_repository.dart';
-
-import '../../model/coffee_model.dart';
 
 class CoffeePage extends StatelessWidget {
   const CoffeePage({Key? key}) : super(key: key);
@@ -67,6 +66,20 @@ class _CoffeeBody extends StatelessWidget {
       }
     }
 
+    void toggleToast() {
+      bool displayToast = context.read<CoffeeBloc>().state.message.isNotEmpty;
+      if (displayToast) {
+        Fluttertoast.showToast(
+            msg: context.read<CoffeeBloc>().state.message,
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.SNACKBAR,
+            timeInSecForIosWeb: 3,
+            backgroundColor: Theme.of(context).colorScheme.secondary,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      }
+    }
+
     void _requestNewCoffee() {
       context.read<CoffeeBloc>().add(CoffeeRequestedEvent());
     }
@@ -79,6 +92,7 @@ class _CoffeeBody extends StatelessWidget {
     }
 
     toggleLoader();
+    toggleToast();
 
     return Container(
       color: Theme.of(context).colorScheme.background,
