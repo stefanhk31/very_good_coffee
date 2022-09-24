@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:very_good_coffee/coffee/view/coffee_page.dart';
 import 'package:very_good_coffee/ui/colors.dart';
 
@@ -25,7 +26,9 @@ class App extends StatelessWidget {
           backgroundColor: CoffeeColors.darkGray,
         ),
       ),
-      home: const CoffeePage(),
+      home: const LoaderOverlay(
+        child: CoffeePage(),
+      ),
     );
   }
 }

@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 import 'package:very_good_coffee/helpers/gallery_helper.dart';
 import 'package:very_good_coffee/repository/coffee_repository.dart';
 
@@ -33,6 +32,7 @@ class CoffeeBloc extends Bloc<CoffeeEvent, CoffeeState> {
       CoffeeRepository repository) async {
     try {
       emit(state.copyWith(
+        coffee: state.coffee,
         loading: true,
       ));
       var coffee = await repository.getCoffee();
