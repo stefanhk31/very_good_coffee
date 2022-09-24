@@ -5,6 +5,8 @@ import 'package:very_good_coffee/coffee/coffee.dart';
 
 import '../../helpers/pump_app.dart';
 
+class FakeCoffeeState extends Fake implements CoffeeState {}
+
 void main() {
   setUpAll(() {
     registerFallbackValue(
