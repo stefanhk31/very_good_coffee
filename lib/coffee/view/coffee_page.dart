@@ -106,25 +106,23 @@ class _CoffeeBody extends StatelessWidget {
             ),
           ),
           SafeArea(
-            child: Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  CtaButton(
-                    onPressed: _requestNewCoffee,
-                    text: 'New Coffee',
-                    padding: const EdgeInsets.fromLTRB(25.0, 10.0, 5.0, 10.0),
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                  CtaButton(
-                    onPressed: _saveCurrentCoffee,
-                    text: 'Save Coffee',
-                    padding: const EdgeInsets.fromLTRB(5.0, 10.0, 25.0, 10.0),
-                    color: Theme.of(context).colorScheme.secondary,
-                  ),
-                ],
-              ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                CtaButton(
+                  onPressed: _requestNewCoffee,
+                  text: 'New Coffee',
+                  padding: const EdgeInsets.fromLTRB(25.0, 10.0, 5.0, 10.0),
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+                CtaButton(
+                  onPressed: _saveCurrentCoffee,
+                  text: 'Save Coffee',
+                  padding: const EdgeInsets.fromLTRB(5.0, 10.0, 25.0, 10.0),
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+              ],
             ),
           ),
         ],
